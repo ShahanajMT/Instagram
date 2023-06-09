@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_flutter/Models/resources/storage_methods.dart';
 
 class AuthMethod {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,13 +24,16 @@ class AuthMethod {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
-          bio.isNotEmpty 
-          ) {
+          bio.isNotEmpty) {
         //register User
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
-            log(cred.user!.uid);
+        log(cred.user!.uid);
+
+        // ImageUpload
+        String photoUrl = await StorageMethod()
+            .uploadImageToStorage("profilePics", file, false);
 
         //Another Method to access data without "uid"
         // await _firestore.collection("users").add({
@@ -49,6 +53,7 @@ class AuthMethod {
           "bio": bio,
           "followers": [],
           "following": [],
+          "photoUrl": photoUrl,
         });
         res = "success";
       }
