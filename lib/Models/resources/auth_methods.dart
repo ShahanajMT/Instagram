@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:instagram_flutter/Models/resources/storage_methods.dart';
+import 'package:instagram_flutter/Models/user_models.dart' as model;
 
 class AuthMethod {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -45,16 +46,19 @@ class AuthMethod {
         //   "following": [],
         // });
 
+        //
+        model.User user = model.User(
+          email: email,
+          uid: cred.user!.uid,
+          photoUrl: photoUrl,
+          username: username,
+          bio: bio,
+          followers: [],
+          following: [],
+        );
+
         //add User to DB
-        await _firestore.collection("users").doc(cred.user!.uid).set({
-          "username": username,
-          "uid": cred.user!.uid,
-          "email": email,
-          "bio": bio,
-          "followers": [],
-          "following": [],
-          "photoUrl": photoUrl,
-        });
+        await _firestore.collection("users").doc(cred.user!.uid).set(user.toJson(),);
         res = "success";
       }
     } catch (err) {
@@ -67,20 +71,19 @@ class AuthMethod {
   Future<String> loginUser({
     required String email,
     required String password,
-  }) async{
+  }) async {
     String res = "Some error occured";
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
-        await _auth.signInWithEmailAndPassword(email: email, password: password);
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
         res = "success";
       } else {
         res = "please enter all the feilds";
       }
-    } catch(err) {
+    } catch (err) {
       res = err.toString();
     }
     return res;
-    
-    
   }
 }
