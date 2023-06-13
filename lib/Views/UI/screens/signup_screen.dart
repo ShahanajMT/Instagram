@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_flutter/Models/resources/auth_methods.dart';
+import 'package:instagram_flutter/Views/UI/screens/login_Screen.dart';
+import 'package:instagram_flutter/responsive/mobile_Screen_layout.dart';
+import 'package:instagram_flutter/responsive/responsive_screen_layout.dart';
+import 'package:instagram_flutter/responsive/web_screen_layout.dart';
 import 'package:instagram_flutter/util/imagePicker.dart';
 import 'package:instagram_flutter/util/snakBar.dart';
 
@@ -59,7 +63,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = false;
     });
 
-    if (res != 'success') {
+    if (res == 'success') {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveScreenLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
+    } else {
       showSnackBar(res, context);
     }
   }
@@ -173,7 +186,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    child: _isLoading ? const Center(child: CircularProgressIndicator(color: primaryColor,),) : const Text("SignUp"),
+                    child: _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
+                            ),
+                          )
+                        : const Text("SignUp"),
                   ),
                 ),
                 const SizedBox(
@@ -193,11 +212,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: const Text("Don't have an account? "),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
+                      },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: const Text(
-                          "Sign up.",
+                          "LogIn.",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),

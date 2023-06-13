@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_flutter/Models/resources/auth_methods.dart';
+import 'package:instagram_flutter/Views/UI/screens/signup_screen.dart';
 import 'package:instagram_flutter/util/colors.dart';
 import 'package:instagram_flutter/util/snakBar.dart';
 import 'package:instagram_flutter/widgets/text_feild_inout.dart';
+
+import '../../../responsive/mobile_Screen_layout.dart';
+import '../../../responsive/responsive_screen_layout.dart';
+import '../../../responsive/web_screen_layout.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -34,6 +39,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (res == "success") {
       //
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveScreenLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
     } else {
       showSnackBar(res, context);
     }
@@ -122,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen(),),);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
