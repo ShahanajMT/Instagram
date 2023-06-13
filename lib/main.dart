@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_flutter/Controllers/api_key.dart';
 import 'package:instagram_flutter/Views/UI/screens/login_Screen.dart';
-import 'package:instagram_flutter/Views/UI/screens/signup_screen.dart';
+
 import 'package:instagram_flutter/responsive/mobile_Screen_layout.dart';
 import 'package:instagram_flutter/responsive/responsive_screen_layout.dart';
 import 'package:instagram_flutter/responsive/web_screen_layout.dart';
