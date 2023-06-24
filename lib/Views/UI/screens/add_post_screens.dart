@@ -2,8 +2,14 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_flutter/Models/resources/firestore_models.dart';
+import 'package:instagram_flutter/providers/user_provider.dart';
 import 'package:instagram_flutter/util/colors.dart';
 import 'package:instagram_flutter/util/imagePicker.dart';
+import 'package:instagram_flutter/util/snakBar.dart';
+import 'package:provider/provider.dart';
+
+import '../../../Models/user_models.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({super.key});
@@ -15,8 +21,42 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   final TextEditingController _captionComtrollers = TextEditingController();
+  bool _isLoading = false;
 
   //
+  void postImage(
+    String uid,
+    String username,
+    String profImage,
+  ) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      String res = await FirestoreMethods().uploadPost(
+        _captionComtrollers.text,
+        _file!,
+        uid,
+        profImage,
+        username,
+      );
+
+      if (res == "success") {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar('Posted!', context);
+        clearImage();
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar(res, context);
+      }
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+  }
 
   //Selecting Images
   _selectImage(BuildContext context) async {
@@ -38,7 +78,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   });
                 },
               ),
-
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
                 child: const Text('Choose a Photo from Gallery'),
@@ -51,13 +90,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   });
                 },
               ),
-
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
                 child: const Text('Cancel'),
-                onPressed: ()  {
+                onPressed: () {
                   Navigator.of(context).pop();
-                 
                 },
               ),
             ],
@@ -72,8 +109,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
     _captionComtrollers.dispose();
   }
 
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<UserProvider>(context).getUser;
     return _file == null
         ? Center(
             child: IconButton(
@@ -86,14 +130,18 @@ class _AddPostScreenState extends State<AddPostScreen> {
               appBar: AppBar(
                 backgroundColor: mobileBackgroundColor,
                 leading: IconButton(
-                  onPressed: () {},
+                  onPressed: () => clearImage(),
                   icon: const Icon(Icons.arrow_back),
                 ),
                 title: const Text('New Post'),
                 centerTitle: false,
                 actions: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => postImage(
+                      user.uid,
+                      user.username,
+                      user.photoUrl,
+                    ),
                     child: const Text(
                       'Share',
                       style: TextStyle(
@@ -110,19 +158,27 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 17),
                 child: Column(
                   children: [
+                    _isLoading
+                        ? const LinearProgressIndicator()
+                        : const Padding(
+                            padding: EdgeInsets.only(top: 0),
+                          ),
+                          const Divider(),
                     Row(
                       children: [
                         SizedBox(
                           height: 100,
                           width: 75,
-                          child: Image(image: MemoryImage(_file!), ),
+                          child: Image(
+                            image: MemoryImage(_file!),
+                          ),
                         ),
                         const SizedBox(
                           width: 12,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.3,
-                          child:  TextField(
+                          child: TextField(
                             controller: _captionComtrollers,
                             decoration: const InputDecoration(
                               hintText: 'write a caption....',
