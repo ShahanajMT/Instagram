@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_flutter/Views/UI/screens/add_post_screens.dart';
+import 'package:instagram_flutter/Views/UI/screens/feed_screen.dart';
 
 final homeScreenItems = [
-  Container(
-    color: Colors.green,
-    alignment: Alignment.center,
-    child: const Text('Page 1'),
-  ),
+  const FeedScreen(),
   Container(
     color: Colors.blue,
     alignment: Alignment.center,
