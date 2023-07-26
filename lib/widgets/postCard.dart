@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:instagram_flutter/util/colors.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({super.key});
+  final snap;
+  const PostCard({super.key, required this.snap});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,10 @@ class PostCard extends StatelessWidget {
             ).copyWith(right: 0),
             child: Row(
               children: [
-                const CircleAvatar(
+                 CircleAvatar(
                   radius: 17,
-                  backgroundColor: Colors.red,
+                  //backgroundColor: Colors.red,
+                  backgroundImage: NetworkImage(snap['profImage']),
                 ),
                 const Expanded(
                   child: Padding(
