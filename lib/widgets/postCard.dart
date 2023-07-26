@@ -20,21 +20,21 @@ class PostCard extends StatelessWidget {
             ).copyWith(right: 0),
             child: Row(
               children: [
-                 CircleAvatar(
+                CircleAvatar(
                   radius: 17,
                   //backgroundColor: Colors.red,
                   backgroundImage: NetworkImage(snap['profImage']),
                 ),
-                const Expanded(
+                Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(left: 8),
+                    padding: const EdgeInsets.only(left: 8),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Username',
-                          style: TextStyle(
+                          snap['username'],
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold),
@@ -79,11 +79,12 @@ class PostCard extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
             child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.green,
+              decoration: BoxDecoration(
+                //color: Colors.green,
                 image: DecorationImage(
                   image: NetworkImage(
-                      'https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg'),
+                    snap['postUrl'],
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -137,7 +138,7 @@ class PostCard extends StatelessWidget {
                       .titleSmall!
                       .copyWith(fontWeight: FontWeight.w800),
                   child: Text(
-                    '1,345 likes',
+                    '${snap['likes'].length} likes',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -145,24 +146,22 @@ class PostCard extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 8),
                   width: double.infinity,
                   child: RichText(
-                    text: const TextSpan(
-                      style: TextStyle(color: primaryColor),
+                    text:  TextSpan(
+                      style: const TextStyle(color: primaryColor),
                       children: [
                         TextSpan(
-                          text: 'Username  ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          text: '${snap['username'] }',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
-                          text: 'Hey this is come text to be replaced',
+                          text: snap['description'],
                         ),
                       ],
                     ),
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    
-                  },
+                  onTap: () {},
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: const Text(
