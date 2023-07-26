@@ -20,7 +20,7 @@ class AddPostScreen extends StatefulWidget {
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
-  final TextEditingController _captionComtrollers = TextEditingController();
+  final TextEditingController _captionControllers = TextEditingController();
   bool _isLoading = false;
 
   //
@@ -34,7 +34,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     });
     try {
       String res = await FirestoreMethods().uploadPost(
-        _captionComtrollers.text,
+        _captionControllers.text,
         _file!,
         uid,
         profImage,
@@ -106,7 +106,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _captionComtrollers.dispose();
+    _captionControllers.dispose();
   }
 
   void clearImage() {
@@ -179,7 +179,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.3,
                           child: TextField(
-                            controller: _captionComtrollers,
+                            controller: _captionControllers,
                             decoration: const InputDecoration(
                               hintText: 'write a caption....',
                               border: InputBorder.none,
