@@ -31,9 +31,9 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: homeScreenItems
+      body: homeScreenItems[currentPageIndex],
         
-      [currentPageIndex],
+      
       
       bottomNavigationBar: NavigationBar(
         //shadowColor: Colors.red,

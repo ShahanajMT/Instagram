@@ -10,6 +10,7 @@ final homeScreenItems = [
     child: const Text('Page 2'),
   ),
   const AddPostScreen(),
+  
   Container(
     color: Colors.cyan,
     alignment: Alignment.center,

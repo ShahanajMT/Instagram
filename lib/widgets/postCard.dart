@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_flutter/util/colors.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
   final snap;
@@ -99,7 +100,7 @@ class PostCard extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.favorite),
+                  icon: const Icon(Icons.favorite, color: Colors.red,),
                 ),
                 IconButton(
                   onPressed: () {},
@@ -154,7 +155,7 @@ class PostCard extends StatelessWidget {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
-                          text: snap['description'],
+                          text: ' ${snap['description']}',
                         ),
                       ],
                     ),
@@ -172,9 +173,9 @@ class PostCard extends StatelessWidget {
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: const Text(
-                    '21/04/2000',
-                    style: TextStyle(fontSize: 13, color: secondaryColor),
+                  child:  Text(
+                    DateFormat.yMMMd().format(snap['datePublished'].toDate()),
+                    style: const TextStyle(fontSize: 13, color: secondaryColor),
                   ),
                 )
               ],
