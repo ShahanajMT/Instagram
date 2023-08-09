@@ -20,7 +20,7 @@ class _PostCardState extends State<PostCard> {
   @override
 
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final User user = Provider.of<UserProvider>(context).getUser!;
     return Container(
       color: mobileBackgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -133,6 +133,7 @@ class _PostCardState extends State<PostCard> {
               ],
             ),
           ),
+          
           const SizedBox(
             height: 5,
           ),
@@ -183,10 +184,7 @@ class _PostCardState extends State<PostCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DefaultTextStyle(
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .copyWith(fontWeight: FontWeight.w800),
+                  style: const TextStyle(fontWeight: FontWeight.w800),
                   child: Text(
                     '${widget.snap['likes'].length} likes',
                     style: Theme.of(context).textTheme.bodyMedium,

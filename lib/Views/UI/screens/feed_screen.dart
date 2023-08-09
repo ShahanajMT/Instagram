@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,19 +43,30 @@ class _FeedScreenState extends State<FeedScreen> {
           stream: FirebaseFirestore.instance.collection('posts').snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                //log(jsonEncode(snapshot.data as String));
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
+            } else if (snapshot.hasError) {
+              return Text('Error : ${snapshot.error}');
+            } else {
+              print(jsonEncode(snapshot.data));
+               log(jsonEncode(snapshot.data as String));
+              return ListView.builder(
+                
+                itemCount: snapshot.data?.docs.length,
+                
+                itemBuilder: (context, index) {
+                  print("Snap is calling!...");
+                  return PostCard(
+                    snap: snapshot.data!.docs[index].data(),
+                    
+                  );
+                   //return const Text('Hai');
+                },
+              );
             }
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                return PostCard(
-                  snap: snapshot.data!.docs[index].data(), 
-                );
-              },
-            );
           },
         ),
       ),
